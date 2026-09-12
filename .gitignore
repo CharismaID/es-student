@@ -1,7 +1,3 @@
 build/
-*.o
-*.elf
-*.uf2
-*.bin
-*.hex
 .vscode/
+.DS_Store
