@@ -1,7 +1,9 @@
-Git: git version 2.55.0
-Python: Python 3.14.7
-CMake: cmake version 4.4.3
-GNU Make: GNU Make 4.4.1
-ARM GCC: arm-none-eabi-gcc (Arch Repository) 16.2.0
-VS Code: 1.137.0
-picotool: picotool v2.3.0 (Linux, GNU-11.4.0, Release)
+git version 2.55.0
+Python 3.14.7
+cmake version 4.4.3
+GNU Make 4.4.1
+arm-none-eabi-gcc (Arch Repository) 16.2.0
+code 1.137.0
+picotool v2.3.0 (Linux, GNU-11.4.0, Release)
+pico-sdk 2.3.0-1-g86b16542
+PICO_SDK_PATH=/home/sine/Repositories/pico/pico-sdk
