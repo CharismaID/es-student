@@ -1,12 +1,17 @@
 #include "memory.h"
 #include "command.h"
 #include "device.h"
+#include "led.h"
 
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include "pico/stdlib.h"
+#include "hardware/gpio.h"
 #include "hardware/regs/addressmap.h"
+
+#define VECTOR_TABLE 0x10000100
+#define SIO_GPIO_IN  0xd0000004
 
 int main(void);
 
@@ -136,4 +141,25 @@ void fw_info(void)
         printf("%-15s 0x%08x  %u\n", "heap_variable", (unsigned)(uintptr_t)heap_variable, (unsigned)*heap_variable);
         free(heap_variable);
     }
+}
+
+void boot_info(void)
+{
+    const uint32_t *vectors = (const uint32_t *)VECTOR_TABLE;
+    uint32_t stack_top = vectors[0];
+    uint32_t reset = vectors[1];
+    uint32_t reset_even = reset & ~1u;
+
+    volatile uint32_t *gpio_in = (volatile uint32_t *)SIO_GPIO_IN;
+    uint pin = led_pin();
+    uint32_t led_bit = (*gpio_in >> pin) & 1u;
+    bool gpio_val = gpio_get(pin);
+
+    printf("vector table   0x%08x\n", VECTOR_TABLE);
+    printf("  stack top    0x%08x\n", (unsigned)stack_top);
+    printf("  reset        0x%08x\n", (unsigned)reset);
+    printf("  reset (even) 0x%08x\n", (unsigned)reset_even);
+    printf("gpio in        0x%08x\n", SIO_GPIO_IN);
+    printf("  led bit      %u\n", (unsigned)led_bit);
+    printf("  gpio_get     %u\n", (unsigned)gpio_val);
 }
