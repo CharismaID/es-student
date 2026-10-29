@@ -1,0 +1,18 @@
+задание: 1.3.2
+проект: 131-hello-usb
+устройство: 2e8a:000a
+серийный номер: 50543165410C5F9C
+порт: /dev/ttyACM0
+начало: 2026-10-29T10:42:01
+   0.506 <-- Hello, world!
+   1.506 <-- Hello, world!
+   2.506 <-- Hello, world!
+   3.506 <-- Hello, world!
+   4.506 <-- Hello, world!
+   5.506 <-- Hello, world!
+   6.506 <-- Hello, world!
+   7.506 <-- Hello, world!
+   8.506 <-- Hello, world!
+   9.506 <-- Hello, world!
+  10.506 <-- Hello, world!
+итог: принято строк 11 за 10.0 с
