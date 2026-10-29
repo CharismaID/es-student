@@ -1,3 +1,6 @@
+# Проверка задания п2.1.4 на устройстве: трижды подряд спрашивает у платы адреса прошивки командой fw_info
+# и записывает обмен в файл device-2-1-4.log.
+
 import time
 from datetime import datetime
 
@@ -10,9 +13,8 @@ PRODUCT_ID = 0x000A
 TASK = "2.1.4"
 PROJECT = "211-command-usb"
 LOG_NAME = "device-2-1-4.log"
-COMMAND = "fw_info"
-CALL_COUNT = 3
-ANSWER_TIMEOUT_S = 1.0
+COMMANDS = ["fw_info", "fw_info", "fw_info"]
+ANSWER_S = 2
 
 
 def find_board():
@@ -24,21 +26,19 @@ def find_board():
 
 def talk(board):
     exchange = []
-    with serial.Serial(board.device, timeout=0.1) as port:
+    with serial.Serial(board.device, timeout=0.5) as port:
         time.sleep(0.2)
         port.reset_input_buffer()
         started = time.monotonic()
-        for _ in range(CALL_COUNT):
-            port.write((COMMAND + "\n").encode("ascii"))
-            exchange.append((time.monotonic() - started, "-->", COMMAND))
-            print("--> " + COMMAND, end="\r\n")
-            silence_start = time.monotonic()
-            while time.monotonic() - silence_start < ANSWER_TIMEOUT_S:
+        for command in COMMANDS:
+            port.write((command + "\n").encode("ascii"))
+            exchange.append((time.monotonic() - started, "-->", command))
+            deadline = time.monotonic() + ANSWER_S
+            while time.monotonic() < deadline:
                 line = port.readline().decode("ascii", "replace").strip()
                 if line:
                     exchange.append((time.monotonic() - started, "<--", line))
-                    print("<-- " + line, end="\r\n")
-                    silence_start = time.monotonic()
+                    print(line, end="\r\n")
     return exchange
 
 
@@ -52,8 +52,8 @@ def write_log(board, exchange):
         log.write("начало: " + datetime.now().isoformat(timespec="seconds") + "\n")
         for moment, direction, text in exchange:
             log.write("%8.3f %s %s\n" % (moment, direction, text))
-        received_count = sum(1 for _, d, _ in exchange if d == "<--")
-        log.write("итог: отправлено команд %d, принято строк %d\n" % (CALL_COUNT, received_count))
+        answers = len(exchange) - len(COMMANDS)
+        log.write("итог: отправлено команд %d, принято строк %d\n" % (len(COMMANDS), answers))
 
 
 board = find_board()
@@ -61,7 +61,7 @@ board = find_board()
 if board is None:
     print("Плата не найдена. Проверьте кабель и запишите на плату прошивку задания.", end="\r\n")
 else:
-    print("Плата на порту " + board.device + ", посылаю команды", end="\r\n")
+    print("Плата на порту " + board.device + ", отправляю команды", end="\r\n")
     exchange = talk(board)
     write_log(board, exchange)
     print("Обмен записан в " + LOG_NAME, end="\r\n")
