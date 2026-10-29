@@ -1,0 +1,36 @@
+задание: 2.1.2
+проект: 211-command-usb
+устройство: 2e8a:000a
+серийный номер: 50543165410C5F9C
+порт: /dev/ttyACM0
+начало: 2026-10-29T11:59:17
+   0.000 --> enable
+   0.130 <-- enable
+   0.131 <-- dbg read_line:102 got enable
+   0.131 <-- inf cmd_enable:28 led on
+   1.136 --> disable
+   1.290 <-- disable
+   1.291 <-- dbg read_line:102 got disable
+   1.292 <-- inf cmd_disable:34 led off
+   2.295 --> info
+   2.391 <-- info
+   2.392 <-- dbg read_line:102 got info
+   2.392 <-- project: 211-command-usb
+   2.394 <-- repo: https://github.com/CharismaID/es-student
+   2.394 <-- board: pico
+   2.394 <-- serial: 50543165410C5F9C
+   2.396 <-- chip: manufacturer 0x927, part 0x0002, revision 2
+   2.396 <-- pico-sdk: 2.3.0
+   3.400 --> version
+   3.552 <-- version
+   3.553 <-- dbg read_line:102 got version
+   3.555 <-- device: es-led-module 1.0.0, built Oct 29 2026 11:53:30, log level 3
+   4.558 --> ping
+   4.653 <-- ping
+   4.654 <-- dbg read_line:102 got ping
+   4.654 <-- pong
+   5.658 --> nosuchcommand
+   5.933 <-- nosuchcommand
+   5.934 <-- dbg read_line:102 got nosuchcommand
+   5.936 <-- err handle_command:83 unknown command: nosuchcommand
+итог: отправлено команд 6, принято строк 23
